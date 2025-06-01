@@ -1,0 +1,12 @@
+# Trong buildspec.yml
+version: 0.2
+phases:
+  install:
+    commands:
+      - npm install
+  build:
+    commands:
+      - npx cdk synth
+artifacts:
+  files:
+    - cdk.out/**/*
