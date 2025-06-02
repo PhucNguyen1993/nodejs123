@@ -1,0 +1,11 @@
+version: 0.0
+os: linux
+files:
+  - source: ./  # thư mục source trên máy bạn
+    destination: /home/ec2-user/app  # thư mục đích trên EC2
+
+hooks:
+  AfterInstall:
+    - location: scripts/update_html.sh
+      timeout: 300
+      runas: ec2-user

@@ -10,3 +10,4 @@ phases:
 artifacts:
   files:
     - cdk.out/**/*
+    - scripts/update_html.sh
