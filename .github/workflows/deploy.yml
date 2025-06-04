@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    if: github.ref == "refs/heads/${{ matrix.branch }}"
+    if: github.ref == 'refs/heads/' + matrix.branch
     runs-on: ubuntu-latest
 
     strategy:
