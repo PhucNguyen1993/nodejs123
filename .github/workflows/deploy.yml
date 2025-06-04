@@ -9,7 +9,6 @@ on:
 
 jobs:
   deploy:
-    if: github.ref == 'refs/heads/' + matrix.branch
     runs-on: ubuntu-latest
 
     strategy:
@@ -42,4 +41,5 @@ jobs:
         run: npm install
 
       - name: Deploy CDK stack
+        if: github.ref == format('refs/heads/{0}', matrix.branch)
         run: npx cdk deploy --context env=${{ matrix.env }} --require-approval=never
