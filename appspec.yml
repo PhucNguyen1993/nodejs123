@@ -9,3 +9,7 @@ hooks:
     - location: scripts/update_html.sh
       timeout: 300
       runas: ec2-user
+#Kiểm tra sau khi khởi tạo
+#sudo systemctl status codedeploy-agent
+#cat /var/log/aws/codedeploy-agent/codedeploy-agent.log
+
