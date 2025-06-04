@@ -11,15 +11,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        include:
-          - branch: main
-            env: prod
-          - branch: develop
-            env: dev
-          - branch: staging
-            env: staging
+    env:
+      ENV: ${{ github.ref_name == 'main' && 'prod' || github.ref_name == 'develop' && 'dev' || github.ref_name == 'staging' && 'staging' || 'unknown' }}
+
 
     steps:
       - name: Checkout repo
@@ -41,5 +35,5 @@ jobs:
         run: npm install
 
       - name: Deploy CDK stack
-        if: github.ref == format('refs/heads/{0}', matrix.branch)
-        run: npx cdk deploy --context env=${{ matrix.env }} --require-approval=never
+        if: env.ENV != 'unknown'
+        run: npx cdk deploy --context env=${{ env.ENV }} --require-approval=never
