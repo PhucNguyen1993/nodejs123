@@ -1,0 +1,39 @@
+name: CDK Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - staging # hoặc nhánh bạn muốn tự động deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      ENV: ${{ github.ref_name == 'main' && 'prod' || github.ref_name == 'develop' && 'dev' || github.ref_name == 'staging' && 'staging' || 'unknown' }}
+
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'   # hoặc version bạn dùng
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy CDK stack
+        if: env.ENV != 'unknown'
+        run: npx cdk deploy --context env=${{ env.ENV }} --require-approval=never
