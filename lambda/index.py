@@ -58,6 +58,9 @@ def lambda_handler(event, context):
                             value_text = get_text(response, value_block)
                             extracted_data[key_text] = value_text
 
+
+    print("DATA: ")
+    print(extracted_data)
     # In ra kết quả
     print("Extracted Key-Value Pairs:")
     for k, v in extracted_data.items():
