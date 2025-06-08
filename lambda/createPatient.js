@@ -1,15 +1,22 @@
-exports.handler = async (event) => {
-  const data = JSON.parse(event.body || '{}');
+import json
 
-  if (!data.full_name || !data.date_of_birth || !data.phone_number) {
+def handler(event, context):
+    body = event.get('body', '{}')
+    try:
+        data = json.loads(body)
+    except json.JSONDecodeError:
+        return {
+            "statusCode": 400,
+            "body": json.dumps({"message": "Invalid JSON"})
+        }
+
+    if not data.get("full_name") or not data.get("date_of_birth") or not data.get("phone_number"):
+        return {
+            "statusCode": 400,
+            "body": json.dumps({"message": "Missing fields"})
+        }
+
     return {
-      statusCode: 400,
-      body: JSON.stringify({ message: "Missing fields" })
-    };
-  }
-
-  return {
-    statusCode: 201,
-    body: JSON.stringify({ message: "Patient created", patient: data })
-  };
-};
+        "statusCode": 201,
+        "body": json.dumps({"message": "Patient created", "patient": data})
+    }
