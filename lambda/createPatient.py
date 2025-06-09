@@ -12,13 +12,13 @@ def handler(event, context):
         print("Data: ")
         print(data)
 
-
-           // Lấy thông tin secret
+    # Lấy thông tin secret
             secret_name = os.environ['DB_SECRET']
             region_name = os.environ['AWS_REGION']
             session = boto3.session.Session()
             client = session.client(service_name='secretsmanager', region_name=region_name)
             secret = json.loads(client.get_secret_value(SecretId=secret_name)['SecretString'])
+
 
             conn = psycopg2.connect(
                 host=os.environ['DB_HOST'],
